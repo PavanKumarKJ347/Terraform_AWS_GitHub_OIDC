@@ -24,7 +24,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-region: ap-south-1
-          role-to-assume: arn:aws:iam::123456789012:role/GitHub_AWS_Role
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
 
       - name: Terraform Format Check
         run: terraform fmt -check -recursive #Format Code in Every Folder Recursively
