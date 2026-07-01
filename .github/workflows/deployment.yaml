@@ -3,10 +3,10 @@ name: Terraform Deployment
 on:
   push:
     branches:
-      - main
+    - main
 
-permissions:
-  id-token: write
+permissions: #GitHub Actions OIDC Authentication With AWS
+  id-token: write #Requests Token from GitHub and AWS Verifies
   contents: read
 
 jobs:
@@ -14,29 +14,29 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+    - name: Checkout Repository
+      uses: actions/checkout@v4
 
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v3
 
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-region: ap-south-1
-          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-region: ap-south-1
+        role-to-assume: ${{ secrets.AWS_ROLE_ARN }} #Refer Secret Stored in GitHub
 
-      - name: Terraform Format Check
-        run: terraform fmt -check -recursive #Format Code in Every Folder Recursively
+    - name: Terraform Format
+      run: terraform fmt -check -recursive #Format Terraform Code Recursively in Every Folder
 
-      - name: Terraform Init
-        run: terraform init
+    - name: Terraform Init
+      run: terraform init
 
-      - name: Terraform Validate
-        run: terraform validate
+    - name: Terraform Validate
+      run: terraform validate
 
-      - name: Terraform Plan
-        run: terraform plan -out=tfplan #Save Terraform Plan
+    - name: Terraform Plan
+      run: terraform plan -out=tfplan #Save Terraform Plan
 
-      - name: Terraform Apply
-        run: terraform apply -auto-approve tfplan #Tells Terraform to apply the previously saved execution plan, rather than generating a new one.
+    - name: Terraform Apply #Tells Terraform to Apply Previously Saved Execution Plan, Rather Than Generating New Plan
+      run: terraform apply -auto-approve tfplan
