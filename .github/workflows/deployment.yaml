@@ -5,8 +5,8 @@ on:
     branches:
     - main
 
-permissions: #GitHub Actions OIDC Authentication With AWS
-  id-token: write #Requests Token from GitHub and AWS Verifies
+permissions:
+  id-token: write
   contents: read
 
 jobs:
@@ -24,10 +24,10 @@ jobs:
       uses: aws-actions/configure-aws-credentials@v4
       with:
         aws-region: ap-south-1
-        role-to-assume: ${{ secrets.AWS_ROLE_ARN }} #Refer Secret Stored in GitHub
+        role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
 
     - name: Terraform Format
-      run: terraform fmt -check -recursive #Format Terraform Code Recursively in Every Folder
+      run: terraform fmt -check -recursive
 
     - name: Terraform Init
       run: terraform init
@@ -36,7 +36,7 @@ jobs:
       run: terraform validate
 
     - name: Terraform Plan
-      run: terraform plan -out=tfplan #Save Terraform Plan
+      run: terraform plan -out=tfplan
 
-    - name: Terraform Apply #Tells Terraform to Apply Previously Saved Execution Plan, Rather Than Generating New Plan
+    - name: Terraform Apply
       run: terraform apply -auto-approve tfplan
