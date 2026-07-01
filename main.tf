@@ -13,7 +13,7 @@ provider "aws" {
 
 resource "aws_instance" "kubernetes_server" {
   ami               = "ami-0038df39db13a87e2"
-  instance_type     = "t2.micro"
+  instance_type     = "t2.medium"
   availability_zone = "ap-south-1a"
   key_name          = "AmazonWebServices"
 
